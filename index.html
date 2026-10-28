@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&display=swap">
 <style>
 *{box-sizing:border-box}
-html{background:#f4ecdc}body{background-attachment:fixed}
+html{background:#f4ecdc}[hidden]{display:none!important}body{background-attachment:fixed}
 /* Layout: a scrapbook spread. Left page: the parent's polaroid taped down, with a voice wave. Right page: the conversation as paper notes. Teacher controls sit on a strip of washi tape above. Single paper-world theme, matching the lesson slides. */
 :root{
   --paper:#f4ecdc; --paper2:#ebdfc6; --card:#fffdf7; --ink:#3d2f25; --muted:#8a7764;
@@ -111,6 +111,62 @@ textarea{flex:1;min-width:0;resize:none;font:1.35rem var(--f-hand);padding:10px 
 .set-row input{flex:1;min-width:0;font:1rem var(--f-hand);padding:7px 10px;border:1.5px solid var(--line);border-radius:8px;background:#fffef9;color:var(--ink)}
 .gmsg{color:var(--teal);font-weight:700}
 .ask{align-self:center;font-size:1.25rem;color:var(--teal);font-weight:700;padding:4px 0}
+
+/* ---------- 工作紙 ---------- */
+.scene-tab.ws-tab img{display:none}
+.ws-tab .ico{width:40px;height:40px;display:grid;place-items:center;font-size:1.5rem;background:#fff6d8;border-radius:6px}
+.ws{background:var(--card);border-radius:10px;box-shadow:0 2px 0 var(--line),0 14px 30px #6b4f2a22;padding:20px clamp(14px,3vw,34px) 28px;display:flex;flex-direction:column;gap:18px}
+.ws-head{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end;justify-content:space-between;border-bottom:2px dashed var(--line);padding-bottom:12px}
+.ws-head h2{margin:0;color:var(--red);font-size:1.7rem}
+.ws-head p{margin:2px 0 0;color:var(--muted)}
+.ws-id{display:flex;flex-wrap:wrap;gap:8px 14px}
+.ws-id label{display:flex;align-items:center;gap:6px;font-size:1.05rem}
+.ws-id input{width:7em;font:1.05rem var(--f-hand);padding:5px 8px;border:1.5px solid var(--line);border-radius:6px;background:#fffef9;color:var(--ink)}
+.ws-id input.short{width:3.2em}
+.step{position:relative;padding:16px 18px 18px;border-radius:8px;box-shadow:0 2px 6px #4a33201a}
+.step.think{background:#fff8dc}.step.talk{background:#fdebe8}.step.share{background:#e7f3ea}
+.step h3{margin:0 0 4px;font-size:1.45rem;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline}
+.step h3 small{font-size:1rem;color:var(--muted);font-weight:400}
+.step .q{margin:6px 0 10px;font-size:1.2rem}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt span{display:flex;align-items:center;gap:8px;min-height:56px;padding:8px 12px;background:#fffdf7;border:2px solid var(--line);border-radius:10px;font-size:1.2rem;cursor:pointer;box-sizing:border-box}
+.opt span::before{content:"";flex:none;width:22px;height:22px;border:2px solid var(--muted);border-radius:5px;background:#fff}
+.opt input[type=radio]+span::before{border-radius:50%}
+.opt input:checked+span{border-color:var(--teal);background:#e2f2f4}
+.opt input:checked+span::before{background:var(--teal);border-color:var(--teal);box-shadow:inset 0 0 0 4px #fff}
+.opt input:focus-visible+span{outline:3px solid var(--mustard);outline-offset:2px}
+.field{display:flex;flex-direction:column;gap:6px;margin-top:12px;font-size:1.15rem}
+.field textarea,.field input[type=text]{font:1.3rem var(--f-hand);padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;background:#fffef9;color:var(--ink);resize:vertical;min-width:0}
+.promise{margin-top:6px;background:#fff;border:3px dashed #e98b9b;border-radius:14px;padding:18px clamp(12px,3vw,26px);text-align:center}
+.promise h4{margin:0 0 8px;font-size:1.5rem;color:var(--red)}
+.who-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;align-items:center;font-size:1.2rem;margin-bottom:8px}
+.who-row .opt span{min-height:44px;padding:4px 14px}
+.promise textarea{width:100%;box-sizing:border-box;text-align:center}
+.sugg{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px}
+.ws-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.ws-actions .btn{font-size:1.15rem;padding:10px 20px}
+.ws-msg{text-align:center;color:var(--red);min-height:1.4em;margin:0}
+.done{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px;align-items:center;background:#fffaf0;padding:18px;border-radius:10px;box-shadow:0 2px 8px #4a33201f}
+@media (max-width:640px){.done{grid-template-columns:1fr}}
+.done .polaroid{width:100%;transform:rotate(-3deg)}
+.done .card{font-size:1.4rem;line-height:1.6}
+.done .card .big{display:block;font-size:clamp(1.5rem,3vw,2.1rem);color:var(--red);font-weight:700;margin:6px 0}
+.done .reply{margin-top:12px;background:#fff7e3;padding:10px 14px;box-shadow:0 2px 6px #4a33201f}
+.records{border-top:2px dashed var(--line);padding-top:12px}
+.records summary{cursor:pointer;font-weight:700;font-size:1.1rem}
+.rec-wrap{overflow-x:auto;margin-top:10px}
+.rec{border-collapse:collapse;width:100%;font-size:1rem;min-width:640px}
+.rec th,.rec td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.rec th{background:#f6eedc}
+@media print{
+  header,.scenes,.settings,.spread,.records,.ws-actions,.ws-msg,.sugg,.mic{display:none!important}
+  body{background:#fff}
+  .ws{box-shadow:none;padding:0}
+  .step,.done{box-shadow:none;border:1px solid #bbb;break-inside:avoid}
+  .opt span{min-height:0;padding:4px 8px}
+}
 </style>
 </head><body>
 
@@ -168,10 +224,86 @@ textarea{flex:1;min-width:0;resize:none;font:1.35rem var(--f-hand);padding:10px 
           <button class="btn primary send" id="send">送出</button>
         </div>
         <p class="mic">🎤 想讓同學直接用粵語說話？先按一下輸入框，再使用電腦或 iPad 的「語音輸入」（選擇粵語／中文（香港）），說完後會自動轉成文字，再按「送出」。</p>
-        <p class="hint">老師操作：選擇情景 →「讀出情景」→「開始對話」。按「下一位同學」會在同一個情景重新開始。</p>
+        <p class="hint">老師操作：選擇情景 →「讀出情景」→「開始對話」。按「下一位同學」會在同一個情景重新開始。完成三個情景後，按「📝 工作紙」。</p>
       </div>
     </section>
   </main>
+
+  <section class="ws" id="worksheet" hidden aria-label="課堂工作紙">
+    <div class="ws-head">
+      <div>
+        <h2>《媽媽回來了》課堂工作紙</h2>
+        <p>單元五：溫情滿屋｜孝親愛家「思－討－享」行動計畫</p>
+      </div>
+      <div class="ws-id">
+        <label>班別：二<input id="ws-class" class="short" type="text" autocomplete="off">班</label>
+        <label>組別：第<input id="ws-group" class="short" type="text" autocomplete="off">組</label>
+        <label>姓名：<input id="ws-name" type="text" autocomplete="off"></label>
+      </div>
+    </div>
+
+    <div class="step think">
+      <h3>🟡 思｜個人思考 <small>步驟一：我獨自想一想</small></h3>
+      <p class="q">問題：我可以怎樣表達對家人的愛與關懷？（請選出適合的項目，或寫下來）</p>
+      <div class="opts" id="think-opts"></div>
+      <label class="field">我想到的暖心小行動：
+        <textarea id="ws-own" rows="2" placeholder="可以用打字或語音輸入"></textarea>
+      </label>
+    </div>
+
+    <div class="step talk">
+      <h3>🔴 討｜小組討論 <small>步驟二：一起來說說看</small></h3>
+      <p class="q">任務：和同組同學分享你的點子，選出最讚、最容易做到的暖心行動！</p>
+      <label class="field">💡 組員的好點子：
+        <textarea id="ws-ideas" rows="2"></textarea>
+      </label>
+      <p class="q" style="margin-top:14px">我們小組一致推薦的「最佳孝親行動」是：</p>
+      <div class="opts" id="best-opts"></div>
+      <label class="field" id="best-other-wrap" hidden>其他行動：
+        <input id="ws-best-other" type="text" autocomplete="off">
+      </label>
+    </div>
+
+    <div class="step share">
+      <h3>🟢 享｜全班分享與實踐 <small>步驟三：回家實踐做一做</small></h3>
+      <div class="promise">
+        <h4>❤️ 我的孝親暖心承諾卡 ❤️</h4>
+        <div class="who-row">今晚回家後，我決定要為
+          <label class="opt"><input type="radio" name="ws-who" value="爸爸"><span>爸爸</span></label>
+          <label class="opt"><input type="radio" name="ws-who" value="媽媽" checked><span>媽媽</span></label>
+          <label class="opt"><input type="radio" name="ws-who" value="家人"><span>家人</span></label>
+          完成這個暖心行動：
+        </div>
+        <textarea id="ws-promise" rows="2" placeholder="「　　　　　　　」"></textarea>
+        <div class="sugg" id="promise-sugg"></div>
+      </div>
+    </div>
+
+    <p class="ws-msg" id="ws-msg" role="status"></p>
+    <div class="ws-actions">
+      <button class="btn primary" id="ws-finish">✔ 完成承諾卡</button>
+      <button class="btn" id="ws-print">🖨 列印工作紙</button>
+      <button class="btn" id="ws-new">➜ 下一位同學</button>
+    </div>
+
+    <div class="done" id="ws-done" hidden>
+      <figure class="polaroid" style="margin:0"><div class="tape"></div><div class="photo"><img id="done-photo" alt=""></div><figcaption class="caption" id="done-cap"></figcaption></figure>
+      <div class="card">
+        <span>今晚回家後，我會為<b id="done-who"></b>：</span>
+        <span class="big" id="done-act"></span>
+        <div class="reply" id="done-reply"></div>
+      </div>
+    </div>
+
+    <details class="records" id="records">
+      <summary>📋 全班記錄（<span id="rec-count">0</span> 份）</summary>
+      <div class="rec-wrap"><table class="rec"><thead><tr><th>時間</th><th>班別</th><th>組別</th><th>姓名</th><th>思：選項</th><th>我的暖心小行動</th><th>組員的好點子</th><th>小組最佳孝親行動</th><th>承諾對象</th><th>承諾行動</th></tr></thead><tbody id="rec-body"></tbody></table></div>
+      <div class="ws-actions" style="margin-top:10px">
+        <button class="btn" id="rec-export">⬇ 匯出記錄（Excel 可開啟）</button>
+        <button class="btn" id="rec-clear">🗑 清除全部記錄</button>
+      </div>
+    </details>
+  </section>
 </div>
 
 <script>
@@ -450,6 +582,7 @@ function reset(showCard){
 }
 function chooseScene(s){
   scene=s;
+  document.querySelector(".spread").hidden=false; $("worksheet").hidden=true; $("tab-ws")?.setAttribute("aria-pressed",false);
   SCENES.forEach(x=>$("tab-"+x.id).setAttribute("aria-pressed", x===s));
   setRole(s.role); renderChips(); reset(true);
 }
@@ -461,6 +594,106 @@ $("role-baba").onclick=()=>{ if(role!=="baba"){ setRole("baba"); reset(true); } 
 $("next").onclick=()=>{ reset(false); log.append(Object.assign(document.createElement("div"),{className:"ask",textContent:`${scene.tab}：${scene.title}`})); startTalk(); };
 $("mute").onclick=()=>{ muted=!muted; $("mute").textContent=muted?"🔇 朗讀：關":"🔊 朗讀：開"; $("mute").setAttribute("aria-pressed",muted); if(muted&&"speechSynthesis" in window) speechSynthesis.cancel(); };
 $("full").onclick=()=>{ try{ const p=document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.(); p?.catch?.(()=>{}); }catch(e){} };
+
+
+/* ---------- 工作紙 ---------- */
+const THINK=["說一句「您辛苦了！」","給家人一個甜甜的擁抱","主動遞上一杯溫水","自己收拾好書包與玩具"];
+const BEST=["熱情招呼與擁抱","遞水／倒茶給父母","主動做好自己的事","寫一張感謝小卡片","其他"];
+function optEl(type,name,val){ const l=document.createElement("label"); l.className="opt";
+  l.innerHTML=`<input type="${type}" name="${name}"><span></span>`; l.querySelector("input").value=val; l.querySelector("span").textContent=val; return l; }
+THINK.forEach(t=>$("think-opts").append(optEl("checkbox","ws-think",t)));
+BEST.forEach(t=>$("best-opts").append(optEl("radio","ws-best",t)));
+document.querySelectorAll('input[name="ws-best"]').forEach(r=>r.addEventListener("change",()=>{ $("best-other-wrap").hidden = r.value!=="其他" || !r.checked; }));
+function refreshSugg(){
+  const picks=[...document.querySelectorAll('input[name="ws-think"]:checked')].map(i=>i.value);
+  const best=document.querySelector('input[name="ws-best"]:checked')?.value;
+  const own=$("ws-own").value.trim();
+  const list=[...new Set([best&&best!=="其他"?best:"", $("ws-best-other").value.trim(), own, ...picks].filter(Boolean))];
+  $("promise-sugg").innerHTML="";
+  list.forEach(t=>{ const b=document.createElement("button"); b.className="chip"; b.type="button"; b.textContent=t; b.onclick=()=>{ $("ws-promise").value=t; }; $("promise-sugg").append(b); });
+}
+["change","input"].forEach(ev=>$("worksheet").addEventListener(ev,e=>{ if(e.target.id!=="ws-promise") refreshSugg(); }));
+
+const wsWho=()=>document.querySelector('input[name="ws-who"]:checked')?.value||"媽媽";
+function wsData(){
+  return {
+    time:new Date().toLocaleString("zh-HK",{hour12:false}),
+    cls:$("ws-class").value.trim(), group:$("ws-group").value.trim(), name:$("ws-name").value.trim(),
+    think:[...document.querySelectorAll('input[name="ws-think"]:checked')].map(i=>i.value).join("、"),
+    own:$("ws-own").value.trim(), ideas:$("ws-ideas").value.trim(),
+    best:(()=>{ const v=document.querySelector('input[name="ws-best"]:checked')?.value||""; return v==="其他"?($("ws-best-other").value.trim()||"其他"):v; })(),
+    who:wsWho(), promise:$("ws-promise").value.trim()
+  };
+}
+function loadRecs(){ try{ return JSON.parse(localStorage.getItem("ws-records")||"[]"); }catch(e){ return []; } }
+function saveRecs(r){ try{ localStorage.setItem("ws-records",JSON.stringify(r)); }catch(e){} }
+let recs=loadRecs(), savedThis=false;
+function renderRecs(){
+  $("rec-count").textContent=recs.length; const tb=$("rec-body"); tb.innerHTML="";
+  recs.forEach(r=>{ const tr=document.createElement("tr");
+    [r.time,r.cls,r.group,r.name,r.think,r.own,r.ideas,r.best,r.who,r.promise].forEach(v=>{ const td=document.createElement("td"); td.textContent=v||""; tr.append(td); });
+    tb.append(tr); });
+}
+renderRecs();
+
+const PROMISE_REPLY={
+  "媽媽":[["寶貝，謝謝你！媽媽很期待今晚啊。你真是個貼心的好孩子。","寶貝，多謝你呀！媽媽好期待今晚呀。你真係好貼心。"]],
+  "爸爸":[["寶貝，謝謝你！爸爸下班回家後，一定很開心。","寶貝，多謝你呀！爸爸放工返到屋企，一定好開心。"]],
+  "家人":[["寶貝，謝謝你！家人知道後一定很感動。愛要用行動表達啊。","寶貝，多謝你呀！屋企人知道一定好感動。愛要用行動表達㗎。"]]
+};
+$("ws-finish").onclick=async()=>{
+  const d=wsData();
+  if(!d.promise){ $("ws-msg").textContent="請先在承諾卡寫下你的暖心行動。"; $("ws-promise").focus(); return; }
+  $("ws-msg").textContent="";
+  const voiceRole = d.who==="爸爸" ? "baba" : "mama";
+  $("done-photo").src=IMG[voiceRole]; $("done-cap").textContent=d.who==="家人"?"家人":d.who;
+  $("done-who").textContent=d.who; $("done-act").textContent="「"+d.promise+"」";
+  let rep=PROMISE_REPLY[d.who][0], show=rep[0], say=rep[1];
+  if(useAI()){
+    try{
+      const raw=await askAI(`你是香港小學二年級中文課中，學生的「${d.who==="家人"?"媽媽":d.who}」。學生剛寫好一張孝親承諾卡，承諾今晚回家為${d.who}完成：「${d.promise}」。請溫柔、具體地回應和鼓勵他，2至3句，每句不超過15字，不要說教，不要用表情符號，不要估計學生是男孩或女孩。
+一定要用以下格式輸出兩行，不要加其他文字：
+書面語：（回應的規範書面語版本）
+粵語：（同一回應的地道香港粵語口語版本）`,[{role:"user",content:"承諾："+d.promise}]);
+      const a=parseAI(raw); show=a.show; say=a.say;
+    }catch(e){}
+  }
+  $("done-reply").textContent=show;
+  $("ws-done").hidden=false; $("ws-done").scrollIntoView({behavior:"smooth",block:"center"});
+  if(!savedThis){ recs.push(d); saveRecs(recs); renderRecs(); savedThis=true; }
+  else { recs[recs.length-1]=d; saveRecs(recs); renderRecs(); }
+  const prevRole=role; role=voiceRole; await speak(say); role=prevRole;
+};
+$("ws-print").onclick=()=>{ try{ window.print(); }catch(e){ $("ws-msg").textContent="未能開啟列印，請按 Ctrl + P。"; } };
+$("ws-new").onclick=()=>{
+  ["ws-name","ws-own","ws-promise"].forEach(id=>$(id).value="");
+  document.querySelectorAll('input[name="ws-think"]').forEach(i=>i.checked=false);
+  $("ws-done").hidden=true; $("ws-msg").textContent=""; savedThis=false; refreshSugg();
+  window.scrollTo({top:0,behavior:"smooth"}); $("ws-name").focus();
+};
+$("rec-export").onclick=()=>{
+  const head=["時間","班別","組別","姓名","思：選項","我的暖心小行動","組員的好點子","小組最佳孝親行動","承諾對象","承諾行動"];
+  const esc=v=>'"'+String(v||"").replace(/"/g,'""')+'"';
+  const rows=[head.map(esc).join(",")].concat(recs.map(r=>[r.time,r.cls,r.group,r.name,r.think,r.own,r.ideas,r.best,r.who,r.promise].map(esc).join(",")));
+  const blob=new Blob(["﻿"+rows.join("\r\n")],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="媽媽回來了_工作紙記錄.csv"; document.body.append(a); a.click(); a.remove();
+};
+let clearArmed=false;
+$("rec-clear").onclick=()=>{
+  if(!clearArmed){ clearArmed=true; $("rec-clear").textContent="再按一次確認清除"; setTimeout(()=>{clearArmed=false;$("rec-clear").textContent="🗑 清除全部記錄";},4000); return; }
+  recs=[]; saveRecs(recs); renderRecs(); clearArmed=false; $("rec-clear").textContent="🗑 清除全部記錄";
+};
+
+/* 切換：情景 ↔ 工作紙 */
+const wsTab=document.createElement("button"); wsTab.className="scene-tab ws-tab"; wsTab.id="tab-ws";
+wsTab.innerHTML='<span class="ico">📝</span><span>工作紙<small>思－討－享 孝親行動</small></span>';
+$("scenes").append(wsTab);
+function showWorksheet(){
+  if(ctrl) ctrl.abort(); if("speechSynthesis" in window) speechSynthesis.cancel(); talk(false);
+  SCENES.forEach(x=>$("tab-"+x.id).setAttribute("aria-pressed",false)); wsTab.setAttribute("aria-pressed",true);
+  document.querySelector(".spread").hidden=true; $("worksheet").hidden=false; refreshSugg();
+}
+wsTab.onclick=showWorksheet;
 
 chooseScene(SCENES[0]);
 </script>
