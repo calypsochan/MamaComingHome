@@ -325,7 +325,7 @@ const SCENES = [
     chips:["媽媽，謝謝你來接我放學！","你等了我很久嗎？辛苦你了！","媽媽，我自己背書包就可以了。","媽媽，我很想念你！"] }
 ];
 
-let scene=SCENES[0], busy=false, muted=false, voices=[], started=false;
+let scene=SCENES[0], busy=false, muted=false, voices=[];
 const $=id=>document.getElementById(id);
 const log=$("log"), input=$("input"), stage=$("stage");
 $("photo").src=IMG.mama; $("done-photo").src=IMG.mama;
@@ -360,6 +360,15 @@ function loadVoices(){
 if("speechSynthesis" in window){ loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; } else loadVoices();
 
 const talk=on=>stage.classList.toggle("talking",on);
+/* iPad：把網頁聲音設為「媒體播放」，讓聲音跟隨 AirPlay／外接喇叭輸出 */
+const SILENT="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";
+let audioPrepped=false;
+function prepAudio(){
+  try{ if(navigator.audioSession && navigator.audioSession.type!=="playback") navigator.audioSession.type="playback"; }catch(e){}
+  if(audioPrepped) return; audioPrepped=true;
+  try{ const a=new Audio(SILENT); a.setAttribute("x-webkit-airplay","allow"); a.play().catch(()=>{}); }catch(e){}
+}
+document.addEventListener("pointerdown",prepAudio,true);
 let speakToken=0;
 function speak(text,narrate){
   const my=++speakToken;
@@ -369,7 +378,7 @@ function speak(text,narrate){
       if(narrate){ res(); return; }
       talk(true); setTimeout(done, Math.min(9000,240*text.length)); return;
     }
-    speechSynthesis.cancel();
+    prepAudio(); speechSynthesis.cancel();
     const u=new SpeechSynthesisUtterance(text);
     const v=voices[$("voice-mama").value]; if(v){u.voice=v;u.lang=v.lang}else u.lang="zh-HK";
     u.rate=narrate?.85:.95;
@@ -396,23 +405,15 @@ function addMama(show,say){
 }
 function renderChips(){
   $("chips").innerHTML="";
-  scene.chips.forEach(t=>{const b=document.createElement("button");b.className="chip";b.textContent=t;b.onclick=()=>{input.value=t;input.focus()};$("chips").append(b)});
+  scene.chips.forEach(t=>{const b=document.createElement("button");b.className="chip";b.textContent=t;b.onclick=()=>{input.value=t;};$("chips").append(b)});
 }
 function sceneCard(){
   const c=document.createElement("div"); c.className="scene-card";
-  c.innerHTML=`<img alt=""><div><h2></h2><p></p><div class="acts">
-    <button class="btn" id="readScene">🔊 讀出情景</button><button class="btn primary" id="startTalk">▶ 開始對話</button></div></div>`;
+  c.innerHTML=`<img alt=""><div><h2></h2><p></p></div>`;
   c.querySelector("img").src=IMG[scene.id];
   c.querySelector("h2").textContent=`${scene.tab}：${scene.title}`;
   c.querySelector("p").textContent=scene.text;
   log.append(c);
-  $("readScene").onclick=()=>{ status("正在朗讀情景……"); speak(scene.text,true).then(()=>status("")); };
-  $("startTalk").onclick=startTalk;
-}
-function startTalk(){
-  if(started) return; started=true;
-  addMama(scene.greet.show, scene.greet.say); status("正在說話……");
-  speak(scene.greet.say).then(()=>status("")); input.focus();
 }
 
 /* 內置回應：按同學所說的內容選擇；每項為［書面語顯示, 粵語朗讀］ */
@@ -442,13 +443,12 @@ function presetReply(text){
 }
 async function reply(text){
   if(busy) return;
-  if(!started){ started=true; addMama(scene.greet.show, scene.greet.say); }
   busy=true; $("send").disabled=true;
   addKid(text);
   const a=presetReply(text);
   addMama(a.show,a.say); status("正在說話……");
   await speak(a.say);
-  status(""); busy=false; $("send").disabled=false; input.focus();
+  status(""); busy=false; $("send").disabled=false;
 }
 function chooseScene(s){
   scene=s;
@@ -456,7 +456,7 @@ function chooseScene(s){
   SCENES.forEach(x=>$("tab-"+x.id).setAttribute("aria-pressed", x===s));
   $("caption-sub").textContent=s.sub; renderChips();
   if("speechSynthesis" in window) speechSynthesis.cancel(); talk(false);
-  busy=false; $("send").disabled=false; started=false; log.innerHTML=""; sceneCard(); status("");
+  busy=false; $("send").disabled=false; log.innerHTML=""; sceneCard(); status("");
 }
 
 SCENES.forEach(s=>{
@@ -469,7 +469,13 @@ SCENES.forEach(s=>{
 $("send").onclick=()=>{const t=input.value.trim(); if(t){input.value=""; reply(t);}};
 input.addEventListener("keydown",e=>{ if(e.key==="Enter"&&!e.shiftKey&&!e.isComposing){e.preventDefault();$("send").click();} });
 $("mute").onclick=()=>{ muted=!muted; $("mute").textContent=muted?"🔇 朗讀：關":"🔊 朗讀：開"; $("mute").setAttribute("aria-pressed",muted); if(muted&&"speechSynthesis" in window) speechSynthesis.cancel(); };
-$("full").onclick=()=>{ try{ const p=document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.(); p?.catch?.(()=>{}); }catch(e){} };
+$("full").onclick=()=>{
+  const el=document.documentElement, fs=document.fullscreenElement||document.webkitFullscreenElement;
+  try{
+    if(fs){ (document.exitFullscreen||document.webkitExitFullscreen).call(document); }
+    else { const p=(el.requestFullscreen||el.webkitRequestFullscreen).call(el); p?.catch?.(()=>{}); }
+  }catch(e){}
+};
 
 /* ---------- 工作紙 ---------- */
 const THINK=["說一句「您辛苦了！」","給家人一個甜甜的擁抱","主動遞上一杯溫水","自己收拾好書包與玩具"];
